@@ -64,7 +64,8 @@ IMPORTANT:
     Aircraft emissions& ``AircraftEmis_FL.nc``                        & netCDF [#Optional]_
     Surface Pressure  & ``SurfacePressure.nc``                        & netCDF [#Optional]_
     Forest Fire       & ``FINN_ForestFireEmis_YYYY.nc``               & netCDF [#Optional]_
-    Dust files        & ``Soil_Tegen.nc``                             & netCDF [#Optional]_
+    Dust files        & ``Dust2014_month.nc``                         & netCDF [#Optional]_
+                      & ``Soil_Tegen.nc``                             & netCDF [#Optional]_
                       & ``SoilTypes_IFS.nc``                          & netCDF [#Optional]_
     Emissions         & ``EECCA/emislist.POLL`` (7 files, EMEP 50km PS grid)             & ASCII [#POLL]_
                       & ``EMEP01/GNFRemis_EMEP01_2015.nc`` (regional, :math:`0.1\times 0.1`  lon-lat) & netCDF [#Optional]_
@@ -412,28 +413,21 @@ compatible with the ``ForestFire_mod.f90`` module.
 Dust files
 ~~~~~~~~~~
 
-The annual ASCII data for sand and clay fractions as well as the monthly
-data for boundary and initial conditions for dust from Sahara are
-replaced with a single NetCDF file ``Soil_Tegen.nc`` since 2013. This
+The annual ASCII data for sand and clay fractions by 
+
+The variables 'sand' and 'clay' gives the fraction (in %) of sand an
+clay in the soil for each grid cell over land. These data are included
+in the NetCDF file ``Soil_Tegen.nc``. This
 covers data for a global domain in :math:`0.5\times 0.5` degree
 resolution.
 
-The variables 'sand' and 'clay' gives the fraction (in %) of sand an
-clay in the soil for each grid cell over land.
-
-The files are used by the module ``DustProd_mod.f90``, which calculates
-windblown dust emissions from soil erosion. Note that the
-parametrization is still in the development and testing phase, and is by
-default 'turned off'. To include it in the model calculations, set
-``USE_DUST=.true.`` in ``config_emep.nml``. The user is recommended to
+The ``Soil_Tegen.nc`` file is used by the ``DustProd_mod.f90`` module, which calculates
+windblown dust emissions from soil erosion.  The user is recommended to
 read carefully documentation and comments in the module ``DustProd_mod.f90``.
 
-There is also a possibility to include boundary and initial conditions
-for dust from Sahara. The input file gives monthly dust mixing ratios
-(MM - month, e.g. 01, 02, 03,...) for fine and coarse dust from Sahara.
-The files are based on calculations from a global CTM at the University
-of Oslo for 2000. To include Saharan dust, set ``USE_SAHARA=.true.`` in
-``config_emep.nml``.
+The monthly file ``Dust2014_month.nc`` has been calcuated by the EMEP model for a global run, 
+in which all dust is on-line computed as wind-blown. This is used as boundary condition
+for dust produced outside the model domain when the ``USE_DUST=.true.``.
 
 Another source for dust is an arid surface. This is accounted for by
 soilmosture calculations in ``DustProd_mod.f90``. Together with Soil
